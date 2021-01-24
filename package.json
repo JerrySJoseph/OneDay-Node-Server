@@ -4,11 +4,13 @@
   "description": "This is the node.js server for the OneDay application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "author": "Jerry S Joseph",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "firebase-admin": "^9.4.2"
   }
 }
