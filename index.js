@@ -21,7 +21,7 @@ app.get('/',function(req,res){
     res.send("ONE DAY SERVER RUNNING ON PORT: "+PORT)
 })
 app.post('/profile',function(req,res){
-    console.log(req.body)
+    console.log(req.body.id)
     res.send(req.body)
 })
 var server = app.listen(PORT, function () {
