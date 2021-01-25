@@ -1,12 +1,19 @@
+//Importing libraries
 var express =require('express');
 var admin= require('firebase-admin');
-const bodyParser = require('body-parser');
+//Importing Router
+const authRouter=require('./routes/auth')
 
+//Initialising Express
 var app=express();
 
-var PORT=3000;
+//Assigning PORT
+const PORT=3000|process.env.PORT;
 
-app.use(bodyParser.urlencoded({ extended: true }));
+//MiddleWares
+app.use(express.json());
+app.use('/api/auth',authRouter)
+
 // Fetch the service account key JSON file contents
 var serviceAccount = require("./oneday-5f5bb-firebase-adminsdk-jodwe-98767dc7ce.json");
 
@@ -17,16 +24,6 @@ admin.initializeApp({
 
 })
 
-app.get('/',function(req,res){
-    res.send("ONE DAY SERVER RUNNING ON PORT: "+PORT)
-})
-app.post('/profile',function(req,res){
-    console.log(req.body.id)
-    res.send(req.body)
-})
-var server = app.listen(PORT, function () {
-
-    var port = server.address().port
-    console.log("Server Running at PORT:"+PORT)
- })
+//Listening to Open PORT
+app.listen(PORT,()=>console.log("One Day Server is Up and Running on localhost:"+PORT))
 
