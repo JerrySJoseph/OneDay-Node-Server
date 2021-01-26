@@ -21,10 +21,6 @@ profileRouter.post('/update',(req,res)=>{
               return res.status(401).send(response.msg)  ;
         }
     });
-   /*
-    const displayProfilemodel=await prepareDisplayProfileObject(req.body).save()
-    *
-    return res.send(displayProfilemodel)*/
 })
 
 function prepareDisplayProfileObject(data)
@@ -46,4 +42,5 @@ function prepareDisplayProfileObject(data)
         interests:data.interests
     })
 }
+
 module.exports=profileRouter;

@@ -18,8 +18,6 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
 //Initialising Express
 var app=express();
 
-
-
 //Importing Router
 const authRouter=require('./routes/auth')
 const profileRouter=require('./routes/profile')
