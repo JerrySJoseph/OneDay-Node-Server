@@ -12,6 +12,7 @@ function isAuthorized(req,response)
     {
         FirebaseAdmin.auth().verifyIdToken(token)
             .then((decodedToken) => {
+                
                 response({
                         success:true,
                         msg:"User token Authorized",

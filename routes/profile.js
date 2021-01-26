@@ -40,7 +40,37 @@ profileRouter.post('/update',(req,res)=>{
         }
     });
 })
-
+profileRouter.post('/fetch',(req,res)=>{
+    
+    //Check Authorization from token header
+    isAuthorized(req,async(response)=>{
+        if(response.success)
+        {
+            if(!req.body.type)
+                return res.status(400).send({
+                    success:false,
+                    msg:"Profile Type not defined in request"
+                })
+                var user;
+            if(req.body.type=='request-type-displayprofile')
+                user=await DisplayProfile.findOne({_id:req.body._id})
+            else if(req.body.type=='request-type-contactprofile')
+                user=await ContactProfile.findOne({_id:req.body._id})
+            else if(req.body.type=='request-type-deviceprofile')
+                user=await DeviceProfile.findOne({_id:req.body._id})
+            else
+                return res.status(400).send({
+                    success:false,
+                    msg:"No such request type exists"
+                })
+            return res.status(200).send(user)
+        }
+        else
+        {
+            return res.status(401).send(response.msg)
+        }
+    });
+})
 function prepareDisplayProfileObject(data)
 {
     return new DisplayProfile({
