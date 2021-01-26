@@ -1,8 +1,8 @@
 //Importing libraries
 var express =require('express');
-
 var mongoose = require('mongoose');
 const dotenv=require('dotenv');
+
 //Configuring dotenv for accessing Environment Variables
 dotenv.config();
 
@@ -19,7 +19,6 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
 var app=express();
 
 //Importing Router
-const authRouter=require('./routes/auth')
 const profileRouter=require('./routes/profile')
 
 //Assigning PORT
@@ -28,11 +27,8 @@ const PORT=3000|process.env.PORT;
 //BodyParser MiddleWare
 app.use(express.json())
 
-
-
 //MiddleWares
 app.use(express.json());
-app.use('/api/auth',authRouter)
 app.use('/api/profile',profileRouter)
 
 
