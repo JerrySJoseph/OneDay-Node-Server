@@ -23,9 +23,13 @@ profileRouter.post('/update',(req,res)=>{
                             "msg":error.details[0].message
                         }
                     )
-            const displayProfile=await prepareDisplayProfileObject(req.body).updateOne(prepareDisplayProfileObject(req.body),{upsert:true})
-            const deviceProfile=await prepareDeviceProfileObject(req.body).updateOne(prepareDeviceProfileObject(req.body),{upsert:true})
-            const contactProfile= await prepareContactProfileObject(req.body).updateOne(prepareContactProfileObject(req.body),{upsert:true})
+                    //Saving or Updating the Data Profiles
+                    const [displayProfile,deviceProfile,contactProfile]=await Promise.all([
+                        prepareDisplayProfileObject(req.body).updateOne(prepareDisplayProfileObject(req.body),{upsert:true}),
+                        prepareDeviceProfileObject(req.body).updateOne(prepareDeviceProfileObject(req.body),{upsert:true}),
+                        prepareContactProfileObject(req.body).updateOne(prepareContactProfileObject(req.body),{upsert:true})
+                    ])
+           
             if(!displayProfile || !deviceProfile)
              return res.status(401).send("Error Writing to Database");           
                 
