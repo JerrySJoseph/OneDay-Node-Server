@@ -1,3 +1,4 @@
+//Importing required libraries
 const profileRouter= require('express').Router();
 var {isAuthorized} =require('../utils/Authorization')
 const { DisplayProfile }=require('../models/DisplayProfile');
@@ -5,11 +6,16 @@ const { DeviceProfile } = require('../models/DeviceProfile');
 const { ContactProfile } = require('../models/ContactProfile');
 const validator= require('../utils/Validator');
 
+
+// update profile route
 profileRouter.post('/update',(req,res)=>{
+    
+    //Check Authorization from token header
     isAuthorized(req,async(response)=>{
         if(response.success)
         {
-            const {error}=validator.ProfileValidator(req.body)
+            //Validate information payload
+           const {error}=validator.ProfileValidator(req.body)
            if(error)
                 return res.status(406).send(
                         {
