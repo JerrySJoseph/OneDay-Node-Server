@@ -6,11 +6,19 @@ profileRouter.post('/update',(req,res)=>{
     isAuthorized(req,async(response)=>{
         if(response.success)
         {
-            const displayProfilemodel=await prepareDisplayProfileObject(req.body).save()
+            prepareDisplayProfileObject(req.body).updateOne(prepareDisplayProfileObject(req.body),{upsert:true},(error)=>{
+                if(error)
+                 return res.status(401).send(error);
+                 return res.status(200).send({
+                     success:true,
+                     msg:"Profile Updated Successfuly"
+                 });
+            })
+            
         }
         else
         {
-                
+              return res.status(401).send(response.msg)  ;
         }
     });
    /*

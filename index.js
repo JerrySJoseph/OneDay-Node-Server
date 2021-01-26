@@ -1,14 +1,24 @@
 //Importing libraries
 var express =require('express');
+
 var mongoose = require('mongoose');
 const dotenv=require('dotenv');
+//Configuring dotenv for accessing Environment Variables
+dotenv.config();
 
+mongoose.connect(process.env.DB_CONNECTION_STRING,
+        {useNewUrlParser:true,useUnifiedTopology:true},
+        (error)=>{
+        if(error)
+            console.log("Database Error:"+error)
+        else
+            console.log("Connection to database established")
+    })
 
 //Initialising Express
 var app=express();
 
-//Configuring dotenv for accessing Environment Variables
-dotenv.config();
+
 
 //Importing Router
 const authRouter=require('./routes/auth')
@@ -20,15 +30,7 @@ const PORT=3000|process.env.PORT;
 //BodyParser MiddleWare
 app.use(express.json())
 
-//Connecting to Database
-mongoose.connect(process.env.DB_CONNECTION_STRING,
-    {useNewUrlParser:true,useUnifiedTopology:true},
-    (error)=>{
-    if(error)
-    console.log('Error connecting to Database :'+error.errmsg)
-    else
-    console.log("Connection Established to Database!")
-})
+
 
 //MiddleWares
 app.use(express.json());

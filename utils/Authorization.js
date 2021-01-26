@@ -21,7 +21,7 @@ function isAuthorized(req,response)
                 .catch((error) => {
                     response( {
                         success:false,
-                        msg:error
+                        msg:error.message
                             });
                 });
                     
