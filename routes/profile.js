@@ -1,24 +1,27 @@
 const profileRouter= require('express').Router();
 var {isAuthorized} =require('../utils/Authorization')
-const {DisplayProfile}=require('../models/DisplayProfile')
+const {DisplayProfile}=require('../models/DisplayProfile');
+const { DeviceProfile } = require('../models/DeviceProfile');
+const { contactProfile, ContactProfile } = require('../models/ContactProfile');
 
 profileRouter.post('/update',(req,res)=>{
     isAuthorized(req,async(response)=>{
         if(response.success)
         {
-            prepareDisplayProfileObject(req.body).updateOne(prepareDisplayProfileObject(req.body),{upsert:true},(error)=>{
-                if(error)
-                 return res.status(401).send(error);
-                 return res.status(200).send({
+            const displayProfile=await prepareDisplayProfileObject(req.body).updateOne(prepareDisplayProfileObject(req.body),{upsert:true})
+            const deviceProfile=await prepareDeviceProfileObject(req.body).updateOne(prepareDeviceProfileObject(req.body),{upsert:true})
+            const contactProfile= await prepareContactProfileObject(req.body).updateOne(prepareContactProfileObject(req.body),{upsert:true})
+            if(!displayProfile || !deviceProfile)
+             return res.status(401).send("Error Writing to Database");           
+                
+            return res.status(200).send({
                      success:true,
                      msg:"Profile Updated Successfuly"
                  });
-            })
-            
         }
         else
         {
-              return res.status(401).send(response.msg)  ;
+            return res.status(401).send(response.msg)
         }
     });
 })
@@ -42,5 +45,27 @@ function prepareDisplayProfileObject(data)
         interests:data.interests
     })
 }
-
+function prepareDeviceProfileObject(data)
+{
+    return new DeviceProfile({
+        _id:data._id,
+       notifToken:data.notifToken,
+       deviceId:data.deviceId
+    })
+}
+function prepareContactProfileObject(data)
+{
+    return new ContactProfile({
+        _id:data._id,
+       phone:data.phone,
+       email:data.email,
+       district:data.district,
+       state:data.state,
+       latitude:data.latitude,
+       longitude:data.longitude,
+       verified:data.verified,
+       authMethod:data.authMethod,
+       country:data.country
+    })
+}
 module.exports=profileRouter;
