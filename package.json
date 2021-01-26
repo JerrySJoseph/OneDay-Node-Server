@@ -10,7 +10,9 @@
   "author": "Jerry S Joseph",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "firebase-admin": "^9.4.2"
+    "firebase-admin": "^9.4.2",
+    "mongoose": "^5.11.13"
   }
 }

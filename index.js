@@ -1,28 +1,40 @@
 //Importing libraries
 var express =require('express');
-var admin= require('firebase-admin');
-//Importing Router
-const authRouter=require('./routes/auth')
+var mongoose = require('mongoose');
+const dotenv=require('dotenv');
+
 
 //Initialising Express
 var app=express();
 
+//Configuring dotenv for accessing Environment Variables
+dotenv.config();
+
+//Importing Router
+const authRouter=require('./routes/auth')
+const profileRouter=require('./routes/profile')
+
 //Assigning PORT
 const PORT=3000|process.env.PORT;
+
+//BodyParser MiddleWare
+app.use(express.json())
+
+//Connecting to Database
+mongoose.connect(process.env.DB_CONNECTION_STRING,
+    {useNewUrlParser:true,useUnifiedTopology:true},
+    (error)=>{
+    if(error)
+    console.log('Error connecting to Database :'+error.errmsg)
+    else
+    console.log("Connection Established to Database!")
+})
 
 //MiddleWares
 app.use(express.json());
 app.use('/api/auth',authRouter)
+app.use('/api/profile',profileRouter)
 
-// Fetch the service account key JSON file contents
-var serviceAccount = require("./oneday-5f5bb-firebase-adminsdk-jodwe-98767dc7ce.json");
-
-// Initialize the app with a custom auth variable, limiting the server's access
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://oneday-5f5bb-default-rtdb.firebaseio.com/",
-
-})
 
 //Listening to Open PORT
 app.listen(PORT,()=>console.log("One Day Server is Up and Running on localhost:"+PORT))
