@@ -1,10 +1,10 @@
 const mongoose= require('mongoose');
-const DisplayProfileSchema=new mongoose.Schema({
+
+const ProfileSchema=new mongoose.Schema({
      _id:{
         type:String,
         required:true,
-    },
-     name:{
+    },name:{
         type:String,
         required:true,
         min:4,
@@ -62,7 +62,48 @@ const DisplayProfileSchema=new mongoose.Schema({
     interests:{
         type:Array,
         default:[]
-    }
+    },
+      notifToken:{
+        type:String,
+        required:true,
+    },
+    deviceId:{
+        type:String,
+        required:true
+    },
+    phone:{
+        type:String,
+        required:true,
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    district:{
+        type:String,
+        required:true,
+    },
+    state:{
+        type:String,
+        required:true
+    },
+    latitude:{
+        type:String,
+        required:true,
+    },
+    longitude:{
+        type:String,
+        required:true
+    },
+    country:{
+        type:String,
+        required:true,
+    },
+    authMethod:{
+        type:String,
+        enum:["GOOGLE,FB,PHONE"],
+        required:true
+    },
 })
 
-module.exports.DisplayProfile = mongoose.model('DisplayProfile',DisplayProfileSchema,'display_profiles')
+module.exports = mongoose.model('Profile',ProfileSchema,'user_profiles')

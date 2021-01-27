@@ -12,7 +12,7 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
         if(error)
             console.log("Database Error:"+error)
         else
-            console.log("Connection to database established")
+            console.log("Connection to Profile database established")
     })
 
 //Initialising Express
