@@ -3,7 +3,7 @@ const profileRouter= require('express').Router();
 var {isAuthorized} =require('../utils/Authorization')
 const Profile=require('../models/Profile')
 const validator= require('../utils/Validator');
-
+const mongoose=require('mongoose');
 
 // update profile route
 profileRouter.post('/update',(req,res)=>{
@@ -36,6 +36,51 @@ profileRouter.post('/update',(req,res)=>{
             return res.status(401).send(response.msg)
         
     });
+})
+profileRouter.post('/genprofiles',(req,res)=>{
+const {limit,district,state,latitudestart,longitudestart,cordinateStep}=req.body
+var arr=[];
+    for(var i=0;i<limit;i++)
+    {
+       
+        const lat =latitudestart+(i/cordinateStep);
+        const lon =longitudestart+(i/cordinateStep);
+        arr.push({
+            _id:district+"_"+state+"_"+i,
+            name:"user_"+i,
+            dob:1611764780000+(i*1000*60*60*24),
+            bio:"Some amazing bio that can match with someone easily my lord",
+            gender:i%2===0?"MALE":"FEMALE",
+            interestedIn:i%2===0?"FEMALE":"MALE",
+            jobTitle:"Sr. Engineer",
+            school:"school",
+            verified:false,
+            nickName:"nick",
+            displayPicture:"https://static.toiimg.com/photo/63264644.cms",
+            portfolio:["https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms",
+            "https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms","https://static.toiimg.com/photo/63264644.cms"],
+            interests:["interests1","interests1","interests1","interests1","interests1","interests1","interests1"],
+            notifToken:"notifToken",
+            deviceId:"deviceId",
+            phone:"+916284887899",
+            email:"user@gmail.com",
+            district:district,
+            state:state,
+            latitude:lat.toString(),
+            longitude:lon.toString(),
+            authMethod:"FC",
+            country:"India"
+            
+        });
+        
+    
+    }
+    mongoose.connection.collection('user_profiles').insertMany(arr,(err,result)=>{
+            if(err)
+             return res.send(err);
+            return res.send("ACTIOn COMPLETE")
+        })
+   
 })
 profileRouter.post('/fetch',(req,res)=>{
     
